@@ -1,0 +1,11 @@
+C:\Users\juanma\source\repos\AgoraXML\AgoraXML\bin\Debug\AgoraXML.exe.config
+C:\Users\juanma\source\repos\AgoraXML\AgoraXML\bin\Debug\AgoraXML.exe
+C:\Users\juanma\source\repos\AgoraXML\AgoraXML\bin\Debug\AgoraXML.pdb
+C:\Users\juanma\source\repos\AgoraXML\AgoraXML\obj\Debug\AgoraXML.csprojResolveAssemblyReference.cache
+C:\Users\juanma\source\repos\AgoraXML\AgoraXML\obj\Debug\AgoraXML.Properties.Resources.resources
+C:\Users\juanma\source\repos\AgoraXML\AgoraXML\obj\Debug\AgoraXML.csproj.GenerateResource.Cache
+C:\Users\juanma\source\repos\AgoraXML\AgoraXML\obj\Debug\AgoraXML.csproj.CoreCompileInputs.cache
+C:\Users\juanma\source\repos\AgoraXML\AgoraXML\obj\Debug\AgoraXML.exe
+C:\Users\juanma\source\repos\AgoraXML\AgoraXML\obj\Debug\AgoraXML.pdb
+C:\Users\juanma\source\repos\AgoraXML\AgoraXML\obj\Debug\AgoraXML.Form1.resources
+C:\Users\juanma\source\repos\AgoraXML\AgoraXML\obj\Debug\AgoraXML.Form2.resources
