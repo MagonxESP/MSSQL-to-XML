@@ -4,6 +4,7 @@ using System.Text;
 using System.IO;
 using System.Data;
 using System.Data.SqlClient;
+using System.Xml;
 
 /**
  * @author MagonxESP
@@ -126,22 +127,39 @@ namespace AgoraXML
             return XmlDB;
         }
 
-        public static void WriteXmlStringToFile(string path, string xmlstring)
+        public static bool WriteXmlStringToFile(string path, string xmlstring)
         {
             try
             {
                 if (path != null && xmlstring != null)
                 {
-                    File.WriteAllText(path, xmlstring);
+                    FileStream fStream = File.Open(path, FileMode.OpenOrCreate); // crear stream del fichero
+                    XmlDocument document = new XmlDocument(); // inicializar un documento xml
+                    XmlTextWriter writer = new XmlTextWriter(fStream, Encoding.UTF8); // inicializar escritor
+
+                    document.LoadXml(xmlstring); // cargamos el documento xml a partir de un string xml
+                    writer.Formatting = Formatting.Indented; // indicamos el formato del documento
+
+                    document.WriteContentTo(writer); // escribimos en un fichero el documento
+
+                    fStream.Flush(); // liberamos memoria del stream del fichero
+                    writer.Flush(); // liberamos memoria del escritor
+
+                    writer.Close();  // cerramos el escritor
+                    fStream.Close(); // cerramos el fichero
+                    
+                    return true; // si no ha ocurrido un error es que todo ha salido bien
                 }
                 else
                 {
                     Console.WriteLine("Debes poner una ruta y un xml antes de intentar crear un fichero");
+                    return false;
                 }
             }
-            catch (IOException ioe)
+            catch (XmlException xmle)
             {
-                Console.WriteLine(ioe.Message);
+                Console.WriteLine(xmle.Message);
+                return false; // devolvemos false si ha saltado una excepcion
             }
         }
 

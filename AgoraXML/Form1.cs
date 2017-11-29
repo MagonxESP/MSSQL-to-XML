@@ -100,6 +100,7 @@ namespace AgoraXML
             if (server.testConnection())
             {
                 Program.dbxml = new DBtoXML(server.getConnection());
+                Program.dbName = this.database;
                 dbform.Show();
                 this.Hide();
             }

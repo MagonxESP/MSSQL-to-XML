@@ -10,6 +10,7 @@ namespace AgoraXML
     {
         public static DBtoXML dbxml;
         public static Form mainForm;
+        public static string dbName;
         /// <summary>
         /// Punto de entrada principal para la aplicación.
         /// </summary>

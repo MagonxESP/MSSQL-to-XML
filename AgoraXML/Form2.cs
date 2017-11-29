@@ -15,6 +15,8 @@ namespace AgoraXML
         private DBtoXML dbxml;
         private List<string> tables;
         private SaveFileDialog explorer;
+        private string table;
+        private string database;
 
         public Form2()
         {
@@ -29,10 +31,11 @@ namespace AgoraXML
         private void Form2_Load(object sender, EventArgs e)
         {
             this.explorer = new SaveFileDialog();
-            explorer.FileName = "export.xml";
-            explorer.Filter = "XML (*.xml)|*.xml";
+            explorer.Filter = "XML (*.xml)|*.xml"; // extension del archivo por defecto
             this.dbxml = Program.dbxml;
+            this.database = Program.dbName;
             this.tables = new List<string>();
+            label1.Text += this.database;
             this.initTables();
         }
 
@@ -60,17 +63,52 @@ namespace AgoraXML
 
         private void exportAllBtn_Click(object sender, EventArgs e)
         {
+            explorer.FileName = "export_" + this.database + ".xml"; // nombre por defecto del xml que exportamos
             DialogResult dr = explorer.ShowDialog();
             
             if(dr == DialogResult.OK)
             {
-                Console.WriteLine(explorer.FileName);
+                string xml = dbxml.tablesToXml(this.database);
+                if(DBtoXML.WriteXmlStringToFile(explorer.FileName, xml))
+                {
+                    Alert.Info("Se han exportado todas las tablas a " + explorer.FileName);
+                }
+                else
+                {
+                    Alert.Warning("Fallo al exportar todas las tablas");
+                }
             }
         }
 
         private void exportTablebtn_Click(object sender, EventArgs e)
         {
+            if(this.table != null)
+            {
+                explorer.FileName = "export_" + this.table + ".xml";
+                DialogResult dr = explorer.ShowDialog();
 
+                if (dr == DialogResult.OK)
+                {
+                    string xml = dbxml.tableToXml(this.table);
+                    if(DBtoXML.WriteXmlStringToFile(explorer.FileName, xml))
+                    {
+                        Alert.Info("Se ha exportado " + this.table + " a " + explorer.FileName);
+                    }
+                    else
+                    {
+                        Alert.Warning("Fallo al exportar " + this.table);
+                    }
+                }
+            }
+            else
+            {
+                Alert.Warning("Debes seleccionar una tabla!");
+            }
+        }
+
+        private void tablesDropDown_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.table = (string) tablesDropDown.SelectedItem;
         }
     }
 }
