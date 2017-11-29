@@ -13,5 +13,17 @@ namespace AgoraXML
         {
             MessageBox.Show(null, text, "Oups", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
+
+        public static bool Confirm(string text)
+        {
+            DialogResult dr = MessageBox.Show(null, text, "?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (dr == DialogResult.Yes)
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace AgoraXML
 {
@@ -25,6 +20,7 @@ namespace AgoraXML
 
         private void Form2_FormClosed(object sender, FormClosedEventArgs e)
         {
+            this.dbxml.close();
             Program.mainForm.Show();
         }
 
@@ -72,6 +68,7 @@ namespace AgoraXML
                 if(DBtoXML.WriteXmlStringToFile(explorer.FileName, xml))
                 {
                     Alert.Info("Se han exportado todas las tablas a " + explorer.FileName);
+                    this.OpenFile(explorer.FileName);
                 }
                 else
                 {
@@ -90,9 +87,11 @@ namespace AgoraXML
                 if (dr == DialogResult.OK)
                 {
                     string xml = dbxml.tableToXml(this.table);
+
                     if(DBtoXML.WriteXmlStringToFile(explorer.FileName, xml))
                     {
                         Alert.Info("Se ha exportado " + this.table + " a " + explorer.FileName);
+                        this.OpenFile(explorer.FileName);
                     }
                     else
                     {
@@ -109,6 +108,14 @@ namespace AgoraXML
         private void tablesDropDown_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.table = (string) tablesDropDown.SelectedItem;
+        }
+
+        private void OpenFile(string path)
+        {
+            if(Alert.Confirm("¿Deseas abrir el fichero exportado?"))
+            {
+                Process.Start(path);
+            }
         }
     }
 }

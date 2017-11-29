@@ -38,6 +38,7 @@
             this.passwordInput = new System.Windows.Forms.TextBox();
             this.testConnectionBtn = new System.Windows.Forms.Button();
             this.conexionBtn = new System.Windows.Forms.Button();
+            this.connectSilentModeBtn = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
             // label1
@@ -130,11 +131,23 @@
             this.conexionBtn.UseVisualStyleBackColor = true;
             this.conexionBtn.Click += new System.EventHandler(this.conexionBtn_Click);
             // 
+            // connectSilentModeBtn
+            // 
+            this.connectSilentModeBtn.AutoSize = true;
+            this.connectSilentModeBtn.Location = new System.Drawing.Point(244, 240);
+            this.connectSilentModeBtn.Name = "connectSilentModeBtn";
+            this.connectSilentModeBtn.Size = new System.Drawing.Size(170, 13);
+            this.connectSilentModeBtn.TabIndex = 11;
+            this.connectSilentModeBtn.TabStop = true;
+            this.connectSilentModeBtn.Text = "Conectar y usar el modo silencioso";
+            this.connectSilentModeBtn.Click += new System.EventHandler(this.connectSilentModeBtn_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(426, 262);
+            this.Controls.Add(this.connectSilentModeBtn);
             this.Controls.Add(this.conexionBtn);
             this.Controls.Add(this.testConnectionBtn);
             this.Controls.Add(this.passwordInput);
@@ -164,6 +177,7 @@
         private System.Windows.Forms.TextBox passwordInput;
         private System.Windows.Forms.Button testConnectionBtn;
         private System.Windows.Forms.Button conexionBtn;
+        private System.Windows.Forms.LinkLabel connectSilentModeBtn;
     }
 }
 

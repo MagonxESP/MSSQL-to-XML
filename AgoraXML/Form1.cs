@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AgoraXML
@@ -108,6 +102,12 @@ namespace AgoraXML
             {
                 Alert.Warning("Error al conectarse con la base de datos");
             }
+        }
+
+        private void connectSilentModeBtn_Click(object sender, EventArgs e)
+        {
+            // activamos el modo silencioso
+
         }
     }
 }
