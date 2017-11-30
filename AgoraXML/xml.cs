@@ -79,6 +79,7 @@ namespace AgoraXML
                 }
 
                 this.result.Close(); // cerramos el reader actual
+                this.tables.Sort(); // ordena la lista
                 return this.tables;
             }
 

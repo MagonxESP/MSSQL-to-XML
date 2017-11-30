@@ -106,8 +106,24 @@ namespace AgoraXML
 
         private void connectSilentModeBtn_Click(object sender, EventArgs e)
         {
-            // activamos el modo silencioso
+            this.user = userInput.Text;
+            this.password = passwordInput.Text;
 
+            Form standAloneForm = new Standalone(); // formulario para programar el modo silencioso
+
+            SQLServer server = new SQLServer(this.sqlserver, this.user, this.password, this.database);
+
+            if (server.testConnection())
+            {
+                Program.dbxml = new DBtoXML(server.getConnection());
+                Program.dbName = this.database;
+                standAloneForm.Show();
+                this.Hide();                
+            }
+            else
+            {
+                Alert.Warning("Error al conectarse con la base de datos");
+            }
         }
     }
 }
