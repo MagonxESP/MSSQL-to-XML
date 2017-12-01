@@ -17,6 +17,7 @@ namespace AgoraXML
         private string db;
         private List<string> tablesExport;
         private FolderBrowserDialog explorer;
+        private NotifyIcon notifyIcon;
 
         public Standalone()
         {
@@ -27,10 +28,17 @@ namespace AgoraXML
         {
             this.temporizador = new Timer();
             this.explorer = new FolderBrowserDialog();
+            this.notifyIcon = new NotifyIcon();
             this.dbxml = Program.dbxml;
             this.db = Program.dbName;
             this.loadTables();
-           // this.temporizador.Tick += new EventHandler(this.exportar);
+            this.temporizador.Tick += new EventHandler(this.temporizador_Tick);
+            this.notifyIcon.Icon = this.Icon;
+        }
+
+        private void temporizador_Tick(object sender, EventArgs e)
+        {
+            this.exportar();
         }
 
         private void loadTables()
@@ -45,9 +53,15 @@ namespace AgoraXML
                 {
                     tableExportList.Items.Add(tables[i]);
                 }
+
+                statusText.ForeColor = Color.GreenYellow;
+                statusText.Text = "Preparado";
             }
             else
             {
+                statusText.ForeColor = Color.Red;
+                statusText.Text = "Error";
+
                 Alert.Warning("Esta base de datos no tiene tablas!");
 
                 if(Alert.Confirm("Sin tablas el programa no funcionara correctamente\n¿Cerrar la aplicacion?"))
@@ -95,10 +109,67 @@ namespace AgoraXML
 
             if(dr == DialogResult.OK)
             {
+                int value = (int) intervalValue.Value;
+                string interval = (string) intervalType.SelectedItem;
+
                 this.SelectTables();
-                this.exportar(); // se llama aqui para probarlo
-                //temporizador.Start();
+
+                if (value > 0 && interval != null && interval != "")
+                {
+                    this.temporizador.Interval = this.getMilliseconds(value, interval);
+                    this.temporizador.Start();
+
+                    statusText.ForeColor = Color.Yellow;
+                    statusText.Text = "Trabajando...";
+
+                    this.toSystemTray();
+                }
+                else
+                {
+                    string msg = "Las tablas se exportaran solo una vez porque no hay un intervalo establecido\n" +
+                                 "¿Exportar igualmente?";
+
+                    if (Alert.Confirm(msg))
+                    {
+                        this.exportar();
+
+                        statusText.ForeColor = Color.Green;
+                        statusText.Text = "Tablas exportadas!";
+                    }
+                }
             }
+        }
+
+        private int getMilliseconds(int value, string interval)
+        {
+            TimeSpan time = new TimeSpan();
+
+            switch (interval)
+            {
+                case "Segundos":
+                    time = TimeSpan.FromSeconds(value);
+                    break;
+                case "Minutos":
+                    time = TimeSpan.FromMinutes(value);
+                    break;
+                case "Horas":
+                    time = TimeSpan.FromHours(value);
+                    break;
+                case "Dias":
+                    time = TimeSpan.FromDays(value);
+                    break;
+            }
+
+            return (int) time.TotalMilliseconds;
+        }
+
+        private void toSystemTray()
+        {
+            this.notifyIcon.Visible = true;
+            this.notifyIcon.BalloonTipTitle = "MSSQL to XML";
+            this.notifyIcon.BalloonTipText = "El programa sigue ejecutandose en segundo plano!";
+            this.notifyIcon.ShowBalloonTip(100);
+            this.Hide();
         }
     }
 }
