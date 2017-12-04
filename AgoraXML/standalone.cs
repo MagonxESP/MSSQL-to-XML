@@ -34,6 +34,7 @@ namespace AgoraXML
             this.loadTables();
             this.temporizador.Tick += new EventHandler(this.temporizador_Tick);
             this.notifyIcon.Icon = this.Icon;
+            this.notifyIcon.MouseClick += new MouseEventHandler(this.maximizeFromSystemTray);
         }
 
         private void temporizador_Tick(object sender, EventArgs e)
@@ -170,6 +171,37 @@ namespace AgoraXML
             this.notifyIcon.BalloonTipText = "El programa sigue ejecutandose en segundo plano!";
             this.notifyIcon.ShowBalloonTip(100);
             this.Hide();
+        }
+
+        private void maximizeFromSystemTray(object sender, EventArgs e)
+        {
+            this.Show();
+            this.notifyIcon.Visible = false;
+        }
+
+        private void Standalone_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // NOTA: Solucionar el cierre de la aplicacion!!
+
+            /*
+            if (e.Cancel)
+            {
+                // si habiamos cancelado que se eliminara de la memoria este formulario
+                e.Cancel = false; // no cancelamos para que elimne de la memoria el formulario
+            }
+            */
+
+            e.Cancel = false;
+
+            if (Alert.Confirm("¿Seguir ejecutando el programa en segundo plano?"))
+            {
+                e.Cancel = true; // Evitamos que el formulario se elimine de la memoria
+                this.toSystemTray();
+            }
+            else
+            {
+                Application.Exit();
+            }
         }
     }
 }

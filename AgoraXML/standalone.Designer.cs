@@ -134,6 +134,7 @@
             this.Controls.Add(this.tableExportList);
             this.Name = "Standalone";
             this.Text = "standalone";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Standalone_FormClosing);
             this.Load += new System.EventHandler(this.Standalone_Load);
             ((System.ComponentModel.ISupportInitialize)(this.intervalValue)).EndInit();
             this.ResumeLayout(false);
