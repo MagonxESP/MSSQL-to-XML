@@ -84,15 +84,23 @@ namespace AgoraXML
         private void loadNotifyIconMenu()
         {
             /**
-             * Acabar el menu del icono
+             * NOTAS:
+             * Ordenar el menu por dioosss!!!
              */
-            MenuItem[] menuItem = { new MenuItem() };
+            MenuItem[] menuItem = new MenuItem[2];
 
-            menuItem[0].Index = 0;
+            // instanciamos cada posicion del vector
+            for(int i = 0; i < menuItem.Length; i++)
+            {
+                menuItem[i] = new MenuItem();
+            }
+
+            // definimos cada item del menu
+            menuItem[0].Index = 1;
             menuItem[0].Text = "Salir";
             menuItem[0].Click += new EventHandler(this.salir);
 
-            menuItem[1].Index = 1;
+            menuItem[1].Index = 0;
             menuItem[1].Text = "Mostrar";
             menuItem[1].Click += new EventHandler(this.maximizeFromSystemTray);
 
