@@ -18,6 +18,7 @@ namespace AgoraXML
         private List<string> tablesExport;
         private FolderBrowserDialog explorer;
         private NotifyIcon notifyIcon;
+        private ContextMenu notifyIconMenu;
 
         public Standalone()
         {
@@ -26,15 +27,23 @@ namespace AgoraXML
 
         private void Standalone_Load(object sender, EventArgs e)
         {
+            // inicializacion de componentes
             this.temporizador = new Timer();
             this.explorer = new FolderBrowserDialog();
             this.notifyIcon = new NotifyIcon();
+            this.notifyIconMenu = new ContextMenu();
+
+            // carga de componentes
             this.dbxml = Program.dbxml;
             this.db = Program.dbName;
             this.loadTables();
-            this.temporizador.Tick += new EventHandler(this.temporizador_Tick);
             this.notifyIcon.Icon = this.Icon;
-            this.notifyIcon.MouseClick += new MouseEventHandler(this.maximizeFromSystemTray);
+            this.notifyIcon.ContextMenu = this.notifyIconMenu;
+            this.loadNotifyIconMenu();
+
+            // inicializacion de eventos
+            this.temporizador.Tick += new EventHandler(this.temporizador_Tick);
+            this.notifyIcon.DoubleClick += new EventHandler(this.maximizeFromSystemTray);
         }
 
         private void temporizador_Tick(object sender, EventArgs e)
@@ -70,6 +79,24 @@ namespace AgoraXML
                     Application.Exit();
                 }
             }
+        }
+
+        private void loadNotifyIconMenu()
+        {
+            /**
+             * Acabar el menu del icono
+             */
+            MenuItem[] menuItem = { new MenuItem() };
+
+            menuItem[0].Index = 0;
+            menuItem[0].Text = "Salir";
+            menuItem[0].Click += new EventHandler(this.salir);
+
+            menuItem[1].Index = 1;
+            menuItem[1].Text = "Mostrar";
+            menuItem[1].Click += new EventHandler(this.maximizeFromSystemTray);
+
+            this.notifyIconMenu.MenuItems.AddRange(menuItem);
         }
 
         private void exportar()
@@ -183,23 +210,20 @@ namespace AgoraXML
         {
             // NOTA: Solucionar el cierre de la aplicacion!!
 
-            /*
-            if (e.Cancel)
-            {
-                // si habiamos cancelado que se eliminara de la memoria este formulario
-                e.Cancel = false; // no cancelamos para que elimne de la memoria el formulario
-            }
-            */
+            bool continueInBackground = Alert.Confirm("¿Seguir ejecutando el programa en segundo plano?");
 
-            e.Cancel = false;
-
-            if (Alert.Confirm("¿Seguir ejecutando el programa en segundo plano?"))
+            if (continueInBackground)
             {
-                e.Cancel = true; // Evitamos que el formulario se elimine de la memoria
+                e.Cancel = true; // Cancelamos el evento para que no elimine de la memoria el formulario
                 this.toSystemTray();
             }
-            else
+        }
+
+        private void salir(object sender, EventArgs e)
+        {
+            if(Alert.Confirm("¿Parar el proceso y salir de la aplicacion?"))
             {
+                this.temporizador.Stop();
                 Application.Exit();
             }
         }
