@@ -36,6 +36,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.statusText = new System.Windows.Forms.Label();
+            this.SaveConfBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.intervalValue)).BeginInit();
             this.SuspendLayout();
             // 
@@ -44,13 +45,13 @@
             this.tableExportList.FormattingEnabled = true;
             this.tableExportList.Location = new System.Drawing.Point(12, 44);
             this.tableExportList.Name = "tableExportList";
-            this.tableExportList.Size = new System.Drawing.Size(151, 154);
+            this.tableExportList.Size = new System.Drawing.Size(151, 184);
             this.tableExportList.TabIndex = 0;
             this.tableExportList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.tableExportList_ItemCheck);
             // 
             // initExportLoopBtn
             // 
-            this.initExportLoopBtn.Location = new System.Drawing.Point(208, 134);
+            this.initExportLoopBtn.Location = new System.Drawing.Point(208, 125);
             this.initExportLoopBtn.Name = "initExportLoopBtn";
             this.initExportLoopBtn.Size = new System.Drawing.Size(174, 39);
             this.initExportLoopBtn.TabIndex = 1;
@@ -102,7 +103,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(205, 185);
+            this.label3.Location = new System.Drawing.Point(207, 213);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(43, 13);
             this.label3.TabIndex = 6;
@@ -113,17 +114,28 @@
             this.statusText.AutoSize = true;
             this.statusText.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.statusText.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.statusText.Location = new System.Drawing.Point(255, 185);
+            this.statusText.Location = new System.Drawing.Point(257, 213);
             this.statusText.Name = "statusText";
             this.statusText.Size = new System.Drawing.Size(41, 13);
             this.statusText.TabIndex = 7;
             this.statusText.Text = "label4";
             // 
+            // SaveConfBtn
+            // 
+            this.SaveConfBtn.Location = new System.Drawing.Point(208, 170);
+            this.SaveConfBtn.Name = "SaveConfBtn";
+            this.SaveConfBtn.Size = new System.Drawing.Size(174, 34);
+            this.SaveConfBtn.TabIndex = 8;
+            this.SaveConfBtn.Text = "Guardar configuración";
+            this.SaveConfBtn.UseVisualStyleBackColor = true;
+            this.SaveConfBtn.Click += new System.EventHandler(this.SaveConfBtn_Click);
+            // 
             // Standalone
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(425, 210);
+            this.ClientSize = new System.Drawing.Size(425, 240);
+            this.Controls.Add(this.SaveConfBtn);
             this.Controls.Add(this.statusText);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -152,5 +164,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label statusText;
+        private System.Windows.Forms.Button SaveConfBtn;
     }
 }

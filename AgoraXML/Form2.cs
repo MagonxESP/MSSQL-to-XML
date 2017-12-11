@@ -112,7 +112,7 @@ namespace AgoraXML
 
         private void OpenFile(string path)
         {
-            if(Alert.Confirm("¿Deseas abrir el fichero exportado?"))
+            if(Alert.Confirm("¿Abrir?", "¿Deseas abrir el fichero exportado?"))
             {
                 Process.Start(path);
             }

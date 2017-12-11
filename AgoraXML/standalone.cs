@@ -19,6 +19,7 @@ namespace AgoraXML
         private FolderBrowserDialog explorer;
         private NotifyIcon notifyIcon;
         private ContextMenu notifyIconMenu;
+        private bool noClose;
 
         public Standalone()
         {
@@ -40,6 +41,7 @@ namespace AgoraXML
             this.notifyIcon.Icon = this.Icon;
             this.notifyIcon.ContextMenu = this.notifyIconMenu;
             this.loadNotifyIconMenu();
+            this.noClose = true;
 
             // inicializacion de eventos
             this.temporizador.Tick += new EventHandler(this.temporizador_Tick);
@@ -74,7 +76,7 @@ namespace AgoraXML
 
                 Alert.Warning("Esta base de datos no tiene tablas!");
 
-                if(Alert.Confirm("Sin tablas el programa no funcionara correctamente\n¿Cerrar la aplicacion?"))
+                if(Alert.Confirm("¿Salir?", "Sin tablas el programa no funcionara correctamente\n¿Cerrar la aplicacion?"))
                 {
                     Application.Exit();
                 }
@@ -96,13 +98,13 @@ namespace AgoraXML
             }
 
             // definimos cada item del menu
-            menuItem[0].Index = 1;
-            menuItem[0].Text = "Salir";
-            menuItem[0].Click += new EventHandler(this.salir);
+            menuItem[0].Index = 0;
+            menuItem[0].Text = "Mostrar";
+            menuItem[0].Click += new EventHandler(this.maximizeFromSystemTray);
 
             menuItem[1].Index = 0;
-            menuItem[1].Text = "Mostrar";
-            menuItem[1].Click += new EventHandler(this.maximizeFromSystemTray);
+            menuItem[1].Text = "Salir";
+            menuItem[1].Click += new EventHandler(this.salir);
 
             this.notifyIconMenu.MenuItems.AddRange(menuItem);
         }
@@ -162,10 +164,11 @@ namespace AgoraXML
                 }
                 else
                 {
+                    string title = "Exportar tablas";
                     string msg = "Las tablas se exportaran solo una vez porque no hay un intervalo establecido\n" +
                                  "¿Exportar igualmente?";
 
-                    if (Alert.Confirm(msg))
+                    if (Alert.Confirm(title, msg))
                     {
                         this.exportar();
 
@@ -216,24 +219,32 @@ namespace AgoraXML
 
         private void Standalone_FormClosing(object sender, FormClosingEventArgs e)
         {
-            // NOTA: Solucionar el cierre de la aplicacion!!
-
-            bool continueInBackground = Alert.Confirm("¿Seguir ejecutando el programa en segundo plano?");
-
-            if (continueInBackground)
+            if (noClose)
             {
                 e.Cancel = true; // Cancelamos el evento para que no elimine de la memoria el formulario
                 this.toSystemTray();
+            }
+            else
+            {
+                e.Cancel = false; // No cancelamos el evento
             }
         }
 
         private void salir(object sender, EventArgs e)
         {
-            if(Alert.Confirm("¿Parar el proceso y salir de la aplicacion?"))
+            if(Alert.Confirm("¿Salir?", "¿Parar el proceso y salir de la aplicacion?"))
             {
-                this.temporizador.Stop();
-                Application.Exit();
+                this.noClose = false;
+                this.temporizador.Stop(); // para el temporizador
+                this.Close(); // cierra este formulario
+                Application.Exit(); // matamos el proceso
             }
+        }
+
+        private void SaveConfBtn_Click(object sender, EventArgs e)
+        {
+            this.SelectTables();
+            Config conf = new Config();
         }
     }
 }
