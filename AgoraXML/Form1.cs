@@ -117,6 +117,7 @@ namespace AgoraXML
             {
                 Program.dbxml = new DBtoXML(server.getConnection());
                 Program.dbName = this.database;
+                this.saveConf();
                 standAloneForm.Show();
                 this.Hide();                
             }
@@ -124,6 +125,18 @@ namespace AgoraXML
             {
                 Alert.Warning("Error al conectarse con la base de datos");
             }
+        }
+
+        private void saveConf()
+        {
+            Config conf = new Config();
+
+            conf.setDataBase(this.database);
+            conf.setUser(this.user);
+            conf.setPassword(this.password);
+            conf.setHost(this.sqlserver);
+
+            Program.conf = conf;
         }
     }
 }

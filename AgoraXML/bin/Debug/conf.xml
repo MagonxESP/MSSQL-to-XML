@@ -1,0 +1,14 @@
+﻿<Config>
+  <Db>igtpos</Db>
+  <User>sa</User>
+  <Password>igt123</Password>
+  <Host>REGIS3-SOPORTE\AGORA</Host>
+  <IntervalMs>600000</IntervalMs>
+  <Tables>
+    <Table>AddinRole</Table>
+    <Table>AddinRoleAddin</Table>
+    <Table>AdminBookmark</Table>
+    <Table>Appointment</Table>
+    <Table>AuditEvent</Table>
+  </Tables>
+</Config>

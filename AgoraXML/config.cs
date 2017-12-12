@@ -15,17 +15,22 @@ namespace AgoraXML
         private XmlElement Password;
         private XmlElement Host;
         private XmlElement Tables;
+        private XmlElement IntervalMs;
+        private XmlElement Path;
         private XmlDocument conf = new XmlDocument();
+        private List<string> tableNames = new List<string>();
 
         public Config() { }
 
-        public Config(string db, string user, string password, string host, List<string> tables)
+        public Config(string db, string user, string password, string host, List<string> tables, int intervalMs, string path)
         {
             this.setDataBase(db);
             this.setUser(user);
             this.setPassword(password);
             this.setHost(host);
             this.setTablesToExport(tables);
+            this.setIntervalMs(intervalMs);
+            this.setPath(path);
         }
 
         public void Load()
@@ -36,7 +41,23 @@ namespace AgoraXML
 
                 this.conf.Load(fileStream);
 
-                // queda extraer los datos
+                // extraemos los datos de los nodos
+                this.DB = (XmlElement) this.conf.SelectSingleNode("Config/Db");
+                this.User = (XmlElement) this.conf.SelectSingleNode("Config/User");
+                this.Password = (XmlElement) this.conf.SelectSingleNode("Config/Password");
+                this.Host = (XmlElement) this.conf.SelectSingleNode("Config/Host");
+                this.IntervalMs = (XmlElement) this.conf.SelectSingleNode("Config/IntervalMs");
+
+                // extraemos las tablas que se van a exportar
+                XmlNodeList tables = this.conf.SelectNodes("Config/Tables/Table");
+
+                if(tables.Count > 0)
+                {
+                    for(int i = 0; i < tables.Count; i++)
+                    {
+                        this.tableNames.Add(tables[i].InnerText);
+                    }
+                }
             }
             catch(IOException ioe)
             {
@@ -51,12 +72,18 @@ namespace AgoraXML
 
             try
             {
-                // agregamos los nodos al documento
-                this.conf.AppendChild(this.DB);
-                this.conf.AppendChild(this.User);
-                this.conf.AppendChild(this.Password);
-                this.conf.AppendChild(this.Host);
-                this.conf.AppendChild(this.Tables);
+                XmlElement root = this.conf.CreateElement("Config");
+                // agregamos los nodos al nodo principal
+                root.AppendChild(this.DB);
+                root.AppendChild(this.User);
+                root.AppendChild(this.Password);
+                root.AppendChild(this.Host);
+                root.AppendChild(this.IntervalMs);
+                root.AppendChild(this.Path);
+                root.AppendChild(this.Tables);
+
+                // agregamos el nodo principal al documento
+                this.conf.AppendChild(root);
 
                 // establecemos con que formato debe escribir el fichero xml
                 xmlWriter.Formatting = Formatting.Indented;
@@ -84,14 +111,14 @@ namespace AgoraXML
         {
             if(tables.Count > 0)
             {
-                this.Tables = this.conf.CreateElement("tables");
+                this.Tables = this.conf.CreateElement("Tables");
 
                 for (int i = 0; i < tables.Count; i++)
                 {
                     // creamos un elemento
-                    XmlElement table = this.conf.CreateElement("table");
+                    XmlElement table = this.conf.CreateElement("Table");
                     // le damos un valor
-                    table.Value = tables[i];
+                    table.InnerText = tables[i];
                     // lo añadimos al elemento tables
                     this.Tables.AppendChild(table);
                 }
@@ -100,46 +127,68 @@ namespace AgoraXML
 
         public void setDataBase(string db)
         {
-            this.DB = this.conf.CreateElement("db");
-            this.DB.Value = db;
+            this.DB = this.conf.CreateElement("Db");
+            this.DB.InnerText = db;
         }
 
         public void setUser(string user)
         {
-            this.User = this.conf.CreateElement("user");
-            this.User.Value = user;
+            this.User = this.conf.CreateElement("User");
+            this.User.InnerText = user;
         }
 
         public void setPassword(string pass)
         {
-            this.Password = this.conf.CreateElement("password");
-            this.Password.Value = pass;
+            this.Password = this.conf.CreateElement("Password");
+            this.Password.InnerText = pass;
         }
 
         public void setHost(string host)
         {
-            this.Host = this.conf.CreateElement("host");
-            this.Host.Value = host;
+            this.Host = this.conf.CreateElement("Host");
+            this.Host.InnerText = host;
+        }
+
+        public void setIntervalMs(int milliseconds)
+        {
+            this.IntervalMs = this.conf.CreateElement("IntervalMs");
+            this.IntervalMs.InnerText = milliseconds.ToString();
+        }
+
+        public void setPath(string path)
+        {
+            this.Path = this.conf.CreateElement("Path");
+            this.Path.InnerText = path;
         }
 
         public string getDataBase()
         {
-            return this.DB.Value;
+            return this.DB.InnerText;
         }
 
         public string getUser()
         {
-            return this.User.Value;
+            return this.User.InnerText;
         }
 
         public string getPassword()
         {
-            return this.Password.Value;
+            return this.Password.InnerText;
         }
 
         public string getHost()
         {
-            return this.Host.Value;
+            return this.Host.InnerText;
+        }
+
+        public int getIntervalMs()
+        {
+            return Int32.Parse(this.IntervalMs.InnerText);
+        }
+
+        public List<string> getTableNames()
+        {
+            return this.tableNames;
         }
     }
 }

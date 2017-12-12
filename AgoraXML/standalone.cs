@@ -19,7 +19,9 @@ namespace AgoraXML
         private FolderBrowserDialog explorer;
         private NotifyIcon notifyIcon;
         private ContextMenu notifyIconMenu;
+        private Config conf;
         private bool noClose;
+        private string SelectedPath;
 
         public Standalone()
         {
@@ -37,6 +39,7 @@ namespace AgoraXML
             // carga de componentes
             this.dbxml = Program.dbxml;
             this.db = Program.dbName;
+            this.conf = Program.conf;
             this.loadTables();
             this.notifyIcon.Icon = this.Icon;
             this.notifyIcon.ContextMenu = this.notifyIconMenu;
@@ -113,7 +116,7 @@ namespace AgoraXML
         {
             for(int i = 0; i < this.tablesExport.Count; i++)
             {
-                string path = explorer.SelectedPath + "\\" + this.tablesExport[i] + ".xml";
+                string path = this.SelectedPath + "\\" + this.tablesExport[i] + ".xml";
                 string xmlString = this.dbxml.tableToXml(this.tablesExport[i]);
 
                 if(xmlString != null && xmlString != "")
@@ -149,6 +152,8 @@ namespace AgoraXML
             {
                 int value = (int) intervalValue.Value;
                 string interval = (string) intervalType.SelectedItem;
+
+                this.SelectedPath = explorer.SelectedPath;
 
                 this.SelectTables();
 
@@ -244,7 +249,18 @@ namespace AgoraXML
         private void SaveConfBtn_Click(object sender, EventArgs e)
         {
             this.SelectTables();
-            Config conf = new Config();
+            this.conf.setIntervalMs(this.temporizador.Interval);
+            this.conf.setPath(this.SelectedPath);
+            this.conf.setTablesToExport(this.tablesExport);
+
+            if (this.conf.Save())
+            {
+                Alert.Info("La configuración se ha guardado con exito");
+            }
+            else
+            {
+                Alert.Warning("Error al guardar la configuración :(");
+            }
         }
     }
 }

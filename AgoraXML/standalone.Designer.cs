@@ -75,9 +75,7 @@
             "Segundos",
             "Minutos",
             "Horas",
-            "Dias",
-            "Meses",
-            "Años"});
+            "Dias"});
             this.intervalType.Location = new System.Drawing.Point(208, 98);
             this.intervalType.Name = "intervalType";
             this.intervalType.Size = new System.Drawing.Size(174, 21);
