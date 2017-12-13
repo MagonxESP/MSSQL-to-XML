@@ -46,6 +46,12 @@ namespace AgoraXML
             this.loadNotifyIconMenu();
             this.noClose = true;
 
+            if (!this.hasConfigFile())
+            {
+                // si no existe fichero de configuracion
+                this.DeleteConfigBtn.Enabled = false; // desactivamos este boton
+            }
+
             // inicializacion de eventos
             this.temporizador.Tick += new EventHandler(this.temporizador_Tick);
             this.notifyIcon.DoubleClick += new EventHandler(this.maximizeFromSystemTray);
@@ -88,10 +94,6 @@ namespace AgoraXML
 
         private void loadNotifyIconMenu()
         {
-            /**
-             * NOTAS:
-             * Ordenar el menu por dioosss!!!
-             */
             MenuItem[] menuItem = new MenuItem[2];
 
             // instanciamos cada posicion del vector
@@ -107,7 +109,7 @@ namespace AgoraXML
 
             menuItem[1].Index = 0;
             menuItem[1].Text = "Salir";
-            menuItem[1].Click += new EventHandler(this.salir);
+            menuItem[1].Click += new EventHandler(this.Salir_Click);
 
             this.notifyIconMenu.MenuItems.AddRange(menuItem);
         }
@@ -166,6 +168,20 @@ namespace AgoraXML
                     statusText.Text = "Trabajando...";
 
                     this.toSystemTray();
+
+                    string title = "¿Guardar configuración?";
+                    string msg = "¿Quieres guardar esta configuración para usarla mas tarde?";
+
+                    if(Alert.Confirm(title, msg))
+                    {
+                        this.saveConfig();
+
+                        if (!this.DeleteConfigBtn.Enabled)
+                        {
+                            // si el boton de eliminar la configuracion estaba desactivado
+                            this.DeleteConfigBtn.Enabled = true; // lo activamos
+                        }
+                    }
                 }
                 else
                 {
@@ -235,20 +251,24 @@ namespace AgoraXML
             }
         }
 
-        private void salir(object sender, EventArgs e)
+        private void StopAndExit()
         {
-            if(Alert.Confirm("¿Salir?", "¿Parar el proceso y salir de la aplicacion?"))
+            this.noClose = false;
+            this.temporizador.Stop(); // para el temporizador
+            this.Close(); // cierra este formulario
+            Application.Exit(); // matamos el proceso
+        }
+
+        private void Salir_Click(object sender, EventArgs e)
+        {
+            if (Alert.Confirm("¿Salir?", "¿Parar el proceso y salir de la aplicacion?"))
             {
-                this.noClose = false;
-                this.temporizador.Stop(); // para el temporizador
-                this.Close(); // cierra este formulario
-                Application.Exit(); // matamos el proceso
+                this.StopAndExit();
             }
         }
 
-        private void SaveConfBtn_Click(object sender, EventArgs e)
+        private void saveConfig()
         {
-            this.SelectTables();
             this.conf.setIntervalMs(this.temporizador.Interval);
             this.conf.setPath(this.SelectedPath);
             this.conf.setTablesToExport(this.tablesExport);
@@ -260,6 +280,77 @@ namespace AgoraXML
             else
             {
                 Alert.Warning("Error al guardar la configuración :(");
+            }
+        }
+
+        public void Configure(Config conf)
+        {
+            // restauramos la configuracion
+            this.conf = conf;
+
+            // cargamos la configuracion
+            this.temporizador.Interval = this.conf.getIntervalMs();
+            this.SelectedPath = this.conf.getPath();
+            this.db = this.conf.getDataBase();
+
+            // restauramos la configuracion para conectarse al servidor de Sql Server
+            SQLServer sqlserver = new SQLServer(this.conf.getHost(), this.conf.getUser(), this.conf.getPassword(), this.conf.getDataBase());
+
+            if (sqlserver.testConnection())
+            {
+                // si tenemos conexion con la base de datos
+                this.dbxml = new DBtoXML(sqlserver.getConnection()); // restauramos la conexion
+                this.tablesExport = this.conf.getTableNames(); // y restauramos las tablas que se tienen que exportar
+
+            }
+        }
+
+        private void DeleteConfigBtn_Click(object sender, EventArgs e)
+        {
+            string title = "¿Eliminar configuracion?";
+            string msg = "¿Estas seguro de eliminar esta configuracion?";
+
+            if(Alert.Confirm(title, msg))
+            {
+                if (this.conf.Delete())
+                {
+                    Alert.Info("Se ha eliminado la configuracion con exito");
+                    this.DeleteConfigBtn.Enabled = false; // desactivamos el boton despues de eliminar el archivo de configuracion
+                }
+                else
+                {
+                    Alert.Warning("No se ha podido eliminar la configuracion!");
+                }
+            }
+        }
+
+        private bool hasConfigFile()
+        {
+            try
+            {
+                System.IO.File.Open("config.xml", System.IO.FileMode.Open);
+                return true;
+            }
+            catch(System.IO.IOException ioe)
+            {
+                Console.WriteLine(ioe.Message);
+                return false;
+            }
+        }
+
+        private void StopAndExitBtn_Click(object sender, EventArgs e)
+        {
+            if(this.temporizador.Enabled)
+            {
+                if (Alert.Confirm("¿Salir?", "¿Parar el proceso y salir de la aplicacion?"))
+                {
+                    this.StopAndExit();
+                }
+            }
+            else
+            {
+                this.noClose = false;
+                Application.Exit();
             }
         }
     }

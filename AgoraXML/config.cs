@@ -8,7 +8,7 @@ using System.IO;
 
 namespace AgoraXML
 {
-    class Config
+    public class Config
     {
         private XmlElement DB;
         private XmlElement User;
@@ -33,11 +33,25 @@ namespace AgoraXML
             this.setPath(path);
         }
 
+        public bool Delete()
+        {
+            try
+            {
+                File.Delete("config.xml");
+                return true;
+            }
+            catch(IOException ioe)
+            {
+                Console.WriteLine(ioe.Message);
+                return false;
+            }
+        }
+
         public void Load()
         {
             try
             {
-                FileStream fileStream = new FileStream("conf.xml", FileMode.Open);
+                FileStream fileStream = new FileStream("config.xml", FileMode.Open);
 
                 this.conf.Load(fileStream);
 
@@ -47,6 +61,7 @@ namespace AgoraXML
                 this.Password = (XmlElement) this.conf.SelectSingleNode("Config/Password");
                 this.Host = (XmlElement) this.conf.SelectSingleNode("Config/Host");
                 this.IntervalMs = (XmlElement) this.conf.SelectSingleNode("Config/IntervalMs");
+                this.Path = (XmlElement) this.conf.SelectSingleNode("Config/Path");
 
                 // extraemos las tablas que se van a exportar
                 XmlNodeList tables = this.conf.SelectNodes("Config/Tables/Table");
@@ -67,7 +82,7 @@ namespace AgoraXML
 
         public bool Save()
         {
-            FileStream confFile = new FileStream("conf.xml", FileMode.OpenOrCreate);
+            FileStream confFile = new FileStream("config.xml", FileMode.OpenOrCreate);
             XmlTextWriter xmlWriter = new XmlTextWriter(confFile, Encoding.UTF8);
 
             try
@@ -184,6 +199,11 @@ namespace AgoraXML
         public int getIntervalMs()
         {
             return Int32.Parse(this.IntervalMs.InnerText);
+        }
+
+        public string getPath()
+        {
+            return this.Path.InnerText;
         }
 
         public List<string> getTableNames()

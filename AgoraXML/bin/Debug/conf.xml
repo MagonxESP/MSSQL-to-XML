@@ -4,11 +4,14 @@
   <Password>igt123</Password>
   <Host>REGIS3-SOPORTE\AGORA</Host>
   <IntervalMs>600000</IntervalMs>
+  <Path>C:\Users\juanma\Desktop\expertaciones</Path>
   <Tables>
     <Table>AddinRole</Table>
     <Table>AddinRoleAddin</Table>
     <Table>AdminBookmark</Table>
-    <Table>Appointment</Table>
-    <Table>AuditEvent</Table>
+    <Table>Cancellation</Table>
+    <Table>Category</Table>
+    <Table>Company</Table>
+    <Table>CouponSaleFormat</Table>
   </Tables>
 </Config>

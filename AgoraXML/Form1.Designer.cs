@@ -55,7 +55,7 @@
             this.hostsDropDown.FormattingEnabled = true;
             this.hostsDropDown.Location = new System.Drawing.Point(12, 76);
             this.hostsDropDown.Name = "hostsDropDown";
-            this.hostsDropDown.Size = new System.Drawing.Size(143, 21);
+            this.hostsDropDown.Size = new System.Drawing.Size(140, 21);
             this.hostsDropDown.TabIndex = 2;
             this.hostsDropDown.SelectedIndexChanged += new System.EventHandler(this.hostsDropDown_SelectedIndexChanged);
             // 
