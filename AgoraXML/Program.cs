@@ -20,8 +20,26 @@ namespace AgoraXML
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            mainForm = new Form1();
-            Application.Run(mainForm);
+
+            Config conf = new Config();
+
+            if (conf.Load())
+            {
+                // si se ha podido cargar una configuracion
+                Standalone s = new Standalone(); // Instanciamos un StandAlone
+
+                if (s.Configure(conf))
+                {
+                    // si se ha configurado correctamente arrancamos la aplicacion
+                    Application.Run(s);
+                }
+            }
+            else
+            {
+                // si no existe configuracion o no se ha podido cargar
+                mainForm = new Form1(); // Instanciamos el formulario principal
+                Application.Run(mainForm); // y arrancamos la aplicacion
+            }            
         }
     }
 }

@@ -9,9 +9,7 @@
     <Table>AddinRole</Table>
     <Table>AddinRoleAddin</Table>
     <Table>AdminBookmark</Table>
-    <Table>Cancellation</Table>
-    <Table>Category</Table>
-    <Table>Company</Table>
-    <Table>CouponSaleFormat</Table>
+    <Table>Appointment</Table>
+    <Table>AuditEvent</Table>
   </Tables>
 </Config>

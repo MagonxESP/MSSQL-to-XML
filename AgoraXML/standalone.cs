@@ -16,30 +16,40 @@ namespace AgoraXML
         private DBtoXML dbxml;
         private string db;
         private List<string> tablesExport;
+        private List<string> tableList;
         private FolderBrowserDialog explorer;
         private NotifyIcon notifyIcon;
         private ContextMenu notifyIconMenu;
         private Config conf;
         private bool noClose;
         private string SelectedPath;
+        private bool isConfigured;
 
         public Standalone()
         {
             InitializeComponent();
-        }
 
-        private void Standalone_Load(object sender, EventArgs e)
-        {
             // inicializacion de componentes
             this.temporizador = new Timer();
             this.explorer = new FolderBrowserDialog();
             this.notifyIcon = new NotifyIcon();
             this.notifyIconMenu = new ContextMenu();
+            this.isConfigured = false;
+        }
 
+        private void Standalone_Load(object sender, EventArgs e)
+        {
             // carga de componentes
-            this.dbxml = Program.dbxml;
-            this.db = Program.dbName;
-            this.conf = Program.conf;
+
+            if(!this.isConfigured)
+            {
+                // si no se ha configurado previamente
+                // cargamos las variables
+                this.dbxml = Program.dbxml;
+                this.db = Program.dbName;
+                this.conf = Program.conf;
+            }
+
             this.loadTables();
             this.notifyIcon.Icon = this.Icon;
             this.notifyIcon.ContextMenu = this.notifyIconMenu;
@@ -64,15 +74,15 @@ namespace AgoraXML
 
         private void loadTables()
         {
-            List<string> tables = new List<string>();
+            this.tableList = new List<string>();
 
-            tables = this.dbxml.getTables();
+            this.tableList = this.dbxml.getTables();
 
-            if(tables.Count > 0)
+            if(this.tableList.Count > 0)
             {
-                for(int i = 0; i < tables.Count; i++)
+                for(int i = 0; i < this.tableList.Count; i++)
                 {
-                    tableExportList.Items.Add(tables[i]);
+                    tableExportList.Items.Add(this.tableList[i]);
                 }
 
                 statusText.ForeColor = Color.GreenYellow;
@@ -283,7 +293,7 @@ namespace AgoraXML
             }
         }
 
-        public void Configure(Config conf)
+        public bool Configure(Config conf)
         {
             // restauramos la configuracion
             this.conf = conf;
@@ -301,8 +311,70 @@ namespace AgoraXML
                 // si tenemos conexion con la base de datos
                 this.dbxml = new DBtoXML(sqlserver.getConnection()); // restauramos la conexion
                 this.tablesExport = this.conf.getTableNames(); // y restauramos las tablas que se tienen que exportar
-
             }
+            else
+            {
+                Alert.Warning("No se ha podido configurar porque ha fallado la conexion con el servidor de bases de datos. El Programa no se ejecutara");
+                this.confirmConfigDelete();
+                return false;
+            }
+
+            this.isConfigured = true; // indicamos que ya se ha cargado una cofiguracion
+            return true;
+        }
+
+        public void StartExport()
+        {
+
+        }
+
+        private int CheckTables()
+        {
+            int tablesExists = 0;
+
+            if(this.tableList.Count > 0 && this.tablesExport.Count > 0)
+            {
+                for (int i = 0; i < this.tablesExport.Count; i++)
+                {
+                    for (int z = 0; z < this.tableList.Count; z++)
+                    {
+                        if(tablesExport[i] == tableList[z])
+                        {
+                            tablesExists++;
+                        }
+                    }
+                }
+
+                return tablesExists;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+        private void confirmConfigDelete()
+        {
+            string title = "¿Eliminar configuracion?";
+            string msg = "¿Quieres eliminar la configuracion actual para crear una configuracion nueva mas tarde?";
+
+            if (Alert.Confirm(title, msg))
+            {
+                if (this.conf.Delete())
+                {
+                    Alert.Info("Se ha eliminado la configuracion con exito");
+                }
+                else
+                {
+                    Alert.Warning("No se ha podido eliminar la configuracion!");
+                }
+            }
+        }
+
+        private void restoreCheckedTables()
+        {
+            
+            this.tableExportList.SetItemChecked(1, true);
         }
 
         private void DeleteConfigBtn_Click(object sender, EventArgs e)

@@ -47,36 +47,50 @@ namespace AgoraXML
             }
         }
 
-        public void Load()
+        public bool Load()
         {
             try
             {
                 FileStream fileStream = new FileStream("config.xml", FileMode.Open);
 
-                this.conf.Load(fileStream);
-
-                // extraemos los datos de los nodos
-                this.DB = (XmlElement) this.conf.SelectSingleNode("Config/Db");
-                this.User = (XmlElement) this.conf.SelectSingleNode("Config/User");
-                this.Password = (XmlElement) this.conf.SelectSingleNode("Config/Password");
-                this.Host = (XmlElement) this.conf.SelectSingleNode("Config/Host");
-                this.IntervalMs = (XmlElement) this.conf.SelectSingleNode("Config/IntervalMs");
-                this.Path = (XmlElement) this.conf.SelectSingleNode("Config/Path");
-
-                // extraemos las tablas que se van a exportar
-                XmlNodeList tables = this.conf.SelectNodes("Config/Tables/Table");
-
-                if(tables.Count > 0)
+                try
                 {
-                    for(int i = 0; i < tables.Count; i++)
+                    this.conf.Load(fileStream);
+
+                    // extraemos los datos de los nodos
+                    this.DB = (XmlElement)this.conf.SelectSingleNode("/Config/Db");
+                    this.User = (XmlElement)this.conf.SelectSingleNode("/Config/User");
+                    this.Password = (XmlElement)this.conf.SelectSingleNode("/Config/Password");
+                    this.Host = (XmlElement)this.conf.SelectSingleNode("/Config/Host");
+                    this.IntervalMs = (XmlElement)this.conf.SelectSingleNode("/Config/IntervalMs");
+                    this.Path = (XmlElement)this.conf.SelectSingleNode("/Config/Path");
+
+                    // extraemos las tablas que se van a exportar
+                    XmlNodeList tables = this.conf.SelectNodes("/Config/Tables/Table");
+
+                    if (tables.Count > 0)
                     {
-                        this.tableNames.Add(tables[i].InnerText);
+                        for (int i = 0; i < tables.Count; i++)
+                        {
+                            this.tableNames.Add(tables[i].InnerText);
+                        }
                     }
                 }
+                catch(XmlException xmle)
+                {
+                    Console.WriteLine(xmle.Message);
+                    return false;
+                }
+
+                fileStream.Flush();
+                fileStream.Close();
+
+                return true;
             }
             catch(IOException ioe)
             {
                 Console.WriteLine(ioe.Message);
+                return false;
             }
         }
 
