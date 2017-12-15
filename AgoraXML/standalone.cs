@@ -24,6 +24,7 @@ namespace AgoraXML
         private bool noClose;
         private string SelectedPath;
         private bool isConfigured;
+        public bool initExportOnLoad;
 
         public Standalone()
         {
@@ -35,6 +36,7 @@ namespace AgoraXML
             this.notifyIcon = new NotifyIcon();
             this.notifyIconMenu = new ContextMenu();
             this.isConfigured = false;
+            this.initExportOnLoad = false;
         }
 
         private void Standalone_Load(object sender, EventArgs e)
@@ -65,6 +67,12 @@ namespace AgoraXML
             // inicializacion de eventos
             this.temporizador.Tick += new EventHandler(this.temporizador_Tick);
             this.notifyIcon.DoubleClick += new EventHandler(this.maximizeFromSystemTray);
+
+            // si se configuro desde un archivo de configuracion ejecutamos el proceso
+            if(this.initExportOnLoad)
+            {
+                this.InitExport();
+            }
         }
 
         private void temporizador_Tick(object sender, EventArgs e)
@@ -323,9 +331,43 @@ namespace AgoraXML
             return true;
         }
 
-        public void StartExport()
+        public void InitExport()
         {
+            int tablesAvailable = this.CheckTables();
 
+            if(tablesAvailable > 0 && tablesAvailable == this.tablesExport.Count)
+            {
+                this.StartExport();
+            }
+            else if(tablesAvailable > 0 && tablesAvailable < this.tablesExport.Count)
+            {
+                string title = "¿Continuar?";
+                string msg = "Se exportaran " + tablesAvailable + " de " + this.tablesExport.Count + " " +
+                            "tablas seleccionadas porque algunas no existen o el nombre no coincide con alguna de las tablas de la base de datos.\n" +
+                            "¿Quieres exportar solo las tablas disponibles?";
+
+                if(Alert.Confirm(title, msg))
+                {
+                    this.StartExport();   
+                }
+            }
+            else
+            {
+                Alert.Warning("Las tablas no existen o los nombres no coinciden con las tablas de las bases de datos. El proceso no se ejecutará. Selecciona las tablas de nuevo para poder exportar.");
+            }
+        }
+
+        private void StartExport()
+        {
+            // iniciar temporizador
+            this.temporizador.Start();
+
+            // poner estado en la ventana
+            statusText.ForeColor = Color.Yellow;
+            statusText.Text = "Trabajando...";
+
+            // ocultar en la barra de tareas
+            this.toSystemTray();
         }
 
         private int CheckTables()

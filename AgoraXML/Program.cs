@@ -31,6 +31,7 @@ namespace AgoraXML
                 if (s.Configure(conf))
                 {
                     // si se ha configurado correctamente arrancamos la aplicacion
+                    s.initExportOnLoad = true; // indicamos que comenzamos a exportar cuando este cargado
                     Application.Run(s);
                 }
             }
