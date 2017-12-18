@@ -96,42 +96,67 @@ namespace AgoraXML
 
         public bool Save()
         {
-            FileStream confFile = new FileStream("config.xml", FileMode.OpenOrCreate);
-            XmlTextWriter xmlWriter = new XmlTextWriter(confFile, Encoding.UTF8);
-
             try
             {
-                XmlElement root = this.conf.CreateElement("Config");
-                // agregamos los nodos al nodo principal
-                root.AppendChild(this.DB);
-                root.AppendChild(this.User);
-                root.AppendChild(this.Password);
-                root.AppendChild(this.Host);
-                root.AppendChild(this.IntervalMs);
-                root.AppendChild(this.Path);
-                root.AppendChild(this.Tables);
+                FileStream confFile = new FileStream("config.xml", FileMode.OpenOrCreate);
+                XmlTextWriter xmlWriter = new XmlTextWriter(confFile, Encoding.UTF8);
 
-                // agregamos el nodo principal al documento
-                this.conf.AppendChild(root);
+                if (confFile.CanWrite)
+                {
+                    // si podemos escribir en el fichero lo limpiamos para añadirle luego el nuevo contenido
+                    StreamWriter streamWriter = new StreamWriter(confFile);
+                    
+                    if(confFile.Length > 0)
+                    {
+                        for(int i = 0; i < confFile.Length; i++)
+                        {
+                            streamWriter.Write("");
+                        }
+                    }
 
-                // establecemos con que formato debe escribir el fichero xml
-                xmlWriter.Formatting = Formatting.Indented;
+                    streamWriter.Flush();
+                    streamWriter.Close();
+                }
 
-                // escribimos el documento en el fichero
-                this.conf.WriteTo(xmlWriter);
+                try
+                {
+                    XmlElement root = this.conf.CreateElement("Config");
+                    // agregamos los nodos al nodo principal
+                    root.AppendChild(this.DB);
+                    root.AppendChild(this.User);
+                    root.AppendChild(this.Password);
+                    root.AppendChild(this.Host);
+                    root.AppendChild(this.IntervalMs);
+                    root.AppendChild(this.Path);
+                    root.AppendChild(this.Tables);
 
-                // limpiamos el buffer
-                xmlWriter.Flush();
-                confFile.Flush();
+                    // agregamos el nodo principal al documento
+                    this.conf.AppendChild(root);
 
-                // cerramos el fichero
-                xmlWriter.Close();
-                confFile.Close();
-                return true;
+                    // establecemos con que formato debe escribir el fichero xml
+                    xmlWriter.Formatting = Formatting.Indented;
+
+                    // escribimos el documento en el fichero
+                    this.conf.WriteTo(xmlWriter);
+
+                    // limpiamos el buffer
+                    xmlWriter.Flush();
+                    confFile.Flush();
+
+                    // cerramos el fichero
+                    xmlWriter.Close();
+                    confFile.Close();
+                    return true;
+                }
+                catch (XmlException xmle)
+                {
+                    Console.WriteLine(xmle.Message);
+                    return false;
+                }
             }
-            catch(XmlException xmle)
+            catch(IOException ioe)
             {
-                Console.WriteLine(xmle.Message);
+                Console.WriteLine(ioe.Message);
                 return false;
             }
         }

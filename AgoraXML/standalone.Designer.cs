@@ -38,6 +38,7 @@
             this.statusText = new System.Windows.Forms.Label();
             this.StopAndExitBtn = new System.Windows.Forms.Button();
             this.DeleteConfigBtn = new System.Windows.Forms.Button();
+            this.StopExporProccessBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.intervalValue)).BeginInit();
             this.SuspendLayout();
             // 
@@ -48,7 +49,6 @@
             this.tableExportList.Name = "tableExportList";
             this.tableExportList.Size = new System.Drawing.Size(151, 154);
             this.tableExportList.TabIndex = 0;
-            this.tableExportList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.tableExportList_ItemCheck);
             // 
             // initExportLoopBtn
             // 
@@ -139,11 +139,23 @@
             this.DeleteConfigBtn.UseVisualStyleBackColor = true;
             this.DeleteConfigBtn.Click += new System.EventHandler(this.DeleteConfigBtn_Click);
             // 
+            // StopExporProccessBtn
+            // 
+            this.StopExporProccessBtn.Location = new System.Drawing.Point(208, 126);
+            this.StopExporProccessBtn.Name = "StopExporProccessBtn";
+            this.StopExporProccessBtn.Size = new System.Drawing.Size(174, 38);
+            this.StopExporProccessBtn.TabIndex = 10;
+            this.StopExporProccessBtn.Text = "Parar proceso";
+            this.StopExporProccessBtn.UseVisualStyleBackColor = true;
+            this.StopExporProccessBtn.Visible = false;
+            this.StopExporProccessBtn.Click += new System.EventHandler(this.StopExporProccessBtn_Click);
+            // 
             // Standalone
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(425, 232);
+            this.Controls.Add(this.StopExporProccessBtn);
             this.Controls.Add(this.DeleteConfigBtn);
             this.Controls.Add(this.StopAndExitBtn);
             this.Controls.Add(this.statusText);
@@ -176,5 +188,6 @@
         private System.Windows.Forms.Label statusText;
         private System.Windows.Forms.Button StopAndExitBtn;
         private System.Windows.Forms.Button DeleteConfigBtn;
+        private System.Windows.Forms.Button StopExporProccessBtn;
     }
 }

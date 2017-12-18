@@ -72,7 +72,13 @@ namespace AgoraXML
             if(this.initExportOnLoad)
             {
                 this.InitExport();
+                this.Shown += new EventHandler(this.toSystemTrayAfterConfig);
             }
+        }
+
+        public void toSystemTrayAfterConfig(object sender, EventArgs e)
+        {
+            this.toSystemTray();
         }
 
         private void temporizador_Tick(object sender, EventArgs e)
@@ -146,11 +152,6 @@ namespace AgoraXML
             }
         }
 
-        private void tableExportList_ItemCheck(object sender, ItemCheckEventArgs e)
-        {
-            
-        }
-
         private void SelectTables()
         {
             this.tablesExport = new List<string>();
@@ -184,6 +185,12 @@ namespace AgoraXML
 
                     statusText.ForeColor = Color.Yellow;
                     statusText.Text = "Trabajando...";
+
+                    if (!this.StopExporProccessBtn.Visible && this.initExportLoopBtn.Visible)
+                    {
+                        this.initExportLoopBtn.Visible = false;
+                        this.StopExporProccessBtn.Visible = true;
+                    }
 
                     this.toSystemTray();
 
@@ -359,6 +366,9 @@ namespace AgoraXML
 
         private void StartExport()
         {
+            // restaurar las tablas seleccionadas en el formulario
+            this.restoreCheckedTables();
+
             // iniciar temporizador
             this.temporizador.Start();
 
@@ -366,8 +376,11 @@ namespace AgoraXML
             statusText.ForeColor = Color.Yellow;
             statusText.Text = "Trabajando...";
 
-            // ocultar en la barra de tareas
-            this.toSystemTray();
+            if (!this.StopExporProccessBtn.Visible && this.initExportLoopBtn.Visible)
+            {
+                this.initExportLoopBtn.Visible = false;
+                this.StopExporProccessBtn.Visible = true;
+            }
         }
 
         private int CheckTables()
@@ -415,8 +428,16 @@ namespace AgoraXML
 
         private void restoreCheckedTables()
         {
-            
-            this.tableExportList.SetItemChecked(1, true);
+            for(int i = 0; i < this.tablesExport.Count; i++)
+            {
+                for(int x = 0; x < this.tableExportList.Items.Count; x++)
+                {
+                    if(this.tablesExport[i] == (string) this.tableExportList.Items[x])
+                    {
+                        this.tableExportList.SetItemChecked(x, true);
+                    }
+                }
+            }
         }
 
         private void DeleteConfigBtn_Click(object sender, EventArgs e)
@@ -465,6 +486,20 @@ namespace AgoraXML
             {
                 this.noClose = false;
                 Application.Exit();
+            }
+        }
+
+        private void StopExporProccessBtn_Click(object sender, EventArgs e)
+        {
+            this.temporizador.Stop();
+
+            statusText.ForeColor = Color.Green;
+            statusText.Text = "Proceso terminado";
+
+            if(this.StopExporProccessBtn.Visible && !this.initExportLoopBtn.Visible)
+            {
+                this.StopExporProccessBtn.Visible = false;
+                this.initExportLoopBtn.Visible = true;
             }
         }
     }
