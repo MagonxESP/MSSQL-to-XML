@@ -491,15 +491,21 @@ namespace AgoraXML
 
         private void StopExporProccessBtn_Click(object sender, EventArgs e)
         {
-            this.temporizador.Stop();
+            string title = "¿Parar el proceso?";
+            string msg = "¿Deseas parar el proceso?";
 
-            statusText.ForeColor = Color.Green;
-            statusText.Text = "Proceso terminado";
-
-            if(this.StopExporProccessBtn.Visible && !this.initExportLoopBtn.Visible)
+            if(Alert.Confirm(title, msg))
             {
-                this.StopExporProccessBtn.Visible = false;
-                this.initExportLoopBtn.Visible = true;
+                this.temporizador.Stop();
+
+                statusText.ForeColor = Color.Green;
+                statusText.Text = "Proceso terminado";
+
+                if (this.StopExporProccessBtn.Visible && !this.initExportLoopBtn.Visible)
+                {
+                    this.StopExporProccessBtn.Visible = false;
+                    this.initExportLoopBtn.Visible = true;
+                }
             }
         }
     }

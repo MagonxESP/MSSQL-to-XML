@@ -103,19 +103,12 @@ namespace AgoraXML
 
                 if (confFile.CanWrite)
                 {
-                    // si podemos escribir en el fichero lo limpiamos para añadirle luego el nuevo contenido
-                    StreamWriter streamWriter = new StreamWriter(confFile);
-                    
-                    if(confFile.Length > 0)
+                    if (confFile.Length > 0)
                     {
-                        for(int i = 0; i < confFile.Length; i++)
-                        {
-                            streamWriter.Write("");
-                        }
+                        // si el fichero esta lleno
+                        File.Delete("config.xml"); // lo eliminamos
+                        File.Create("config.xml"); // y creamos uno nuevo vacio
                     }
-
-                    streamWriter.Flush();
-                    streamWriter.Close();
                 }
 
                 try
