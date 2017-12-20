@@ -1,0 +1,32 @@
+C:\Users\juanma\source\repos\AgoraXML\AgoraXML\obj\Debug\MSSQLtoXML.csprojResolveAssemblyReference.cache
+C:\Users\juanma\source\repos\AgoraXML\AgoraXML\obj\Debug\mssqltoxml.Form1.resources
+C:\Users\juanma\source\repos\AgoraXML\AgoraXML\obj\Debug\mssqltoxml.Form2.resources
+C:\Users\juanma\source\repos\AgoraXML\AgoraXML\obj\Debug\mssqltoxml.Standalone.resources
+C:\Users\juanma\source\repos\AgoraXML\AgoraXML\obj\Debug\MSSQLtoXML.csproj.GenerateResource.Cache
+C:\Users\juanma\source\repos\AgoraXML\AgoraXML\obj\Debug\MSSQLtoXML.csproj.CoreCompileInputs.cache
+C:\Users\juanma\source\repos\AgoraXML\AgoraXML\bin\Debug\MSSQLtoXML.exe.config
+C:\Users\juanma\source\repos\AgoraXML\AgoraXML\bin\Debug\MSSQLtoXML.exe
+C:\Users\juanma\source\repos\AgoraXML\AgoraXML\bin\Debug\MSSQLtoXML.pdb
+C:\Users\juanma\source\repos\AgoraXML\AgoraXML\obj\Debug\mssqltoxml.Properties.Resources.resources
+C:\Users\juanma\source\repos\AgoraXML\AgoraXML\obj\Debug\MSSQLtoXML.exe
+C:\Users\juanma\source\repos\AgoraXML\AgoraXML\obj\Debug\MSSQLtoXML.pdb
+C:\Users\juanma\source\repos\AgoraXML\AgoraXML\bin\Debug\MSSQLtoXML.exe.manifest
+C:\Users\juanma\source\repos\AgoraXML\AgoraXML\bin\Debug\MSSQLtoXML.application
+C:\Users\juanma\source\repos\AgoraXML\AgoraXML\obj\Debug\MSSQLtoXML.exe.manifest
+C:\Users\juanma\source\repos\AgoraXML\AgoraXML\obj\Debug\MSSQLtoXML.application
+C:\Users\juanma\source\repos\MSSQL to XML\AgoraXML\bin\Debug\MSSQLtoXML.exe.config
+C:\Users\juanma\source\repos\MSSQL to XML\AgoraXML\bin\Debug\MSSQLtoXML.exe.manifest
+C:\Users\juanma\source\repos\MSSQL to XML\AgoraXML\bin\Debug\MSSQLtoXML.application
+C:\Users\juanma\source\repos\MSSQL to XML\AgoraXML\bin\Debug\MSSQLtoXML.exe
+C:\Users\juanma\source\repos\MSSQL to XML\AgoraXML\bin\Debug\MSSQLtoXML.pdb
+C:\Users\juanma\source\repos\MSSQL to XML\AgoraXML\obj\Debug\MSSQLtoXML.csprojResolveAssemblyReference.cache
+C:\Users\juanma\source\repos\MSSQL to XML\AgoraXML\obj\Debug\mssqltoxml.Form1.resources
+C:\Users\juanma\source\repos\MSSQL to XML\AgoraXML\obj\Debug\mssqltoxml.Form2.resources
+C:\Users\juanma\source\repos\MSSQL to XML\AgoraXML\obj\Debug\mssqltoxml.Properties.Resources.resources
+C:\Users\juanma\source\repos\MSSQL to XML\AgoraXML\obj\Debug\mssqltoxml.Standalone.resources
+C:\Users\juanma\source\repos\MSSQL to XML\AgoraXML\obj\Debug\MSSQLtoXML.csproj.GenerateResource.Cache
+C:\Users\juanma\source\repos\MSSQL to XML\AgoraXML\obj\Debug\MSSQLtoXML.csproj.CoreCompileInputs.cache
+C:\Users\juanma\source\repos\MSSQL to XML\AgoraXML\obj\Debug\MSSQLtoXML.exe.manifest
+C:\Users\juanma\source\repos\MSSQL to XML\AgoraXML\obj\Debug\MSSQLtoXML.application
+C:\Users\juanma\source\repos\MSSQL to XML\AgoraXML\obj\Debug\MSSQLtoXML.exe
+C:\Users\juanma\source\repos\MSSQL to XML\AgoraXML\obj\Debug\MSSQLtoXML.pdb

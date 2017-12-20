@@ -1,0 +1,15 @@
+﻿<Config>
+  <Db>igtpos</Db>
+  <User>sa</User>
+  <Password>igt123</Password>
+  <Host>REGIS3-SOPORTE\AGORA</Host>
+  <Path>C:\Users\juanma\Desktop\expertaciones</Path>
+  <IntervalMs>1200000</IntervalMs>
+  <Tables>
+    <Table>AddinRole</Table>
+    <Table>AddinRoleAddin</Table>
+    <Table>AdminBookmark</Table>
+    <Table>Appointment</Table>
+    <Table>Product</Table>
+  </Tables>
+</Config>
